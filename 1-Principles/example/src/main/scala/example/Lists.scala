@@ -1,8 +1,5 @@
 package example
 
-import common._
-import java.util.NoSuchElementException
-
 object Lists {
 
   /**

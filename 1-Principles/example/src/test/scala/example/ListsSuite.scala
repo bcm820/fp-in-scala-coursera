@@ -68,7 +68,7 @@ class ListsSuite extends FunSuite {
   test("sum of a list of negative ints")(assert(sum(List(-1,-2,-3)) === -6))
   test("sum of a list of zeros")(assert(sum(List(0,0,0)) === 0))
   test("sum of a list of repeats")(assert(sum(List(7,7,7)) === 21))
-  test("sum of an empty list")(assert(sum(List()) === 0))
+  test("sum of an empty list returns 0")(assert(sum(List()) === 0))
 
   // max
   test("max of a list of ints")(assert(max(List(3, 7, 2)) === 7))
