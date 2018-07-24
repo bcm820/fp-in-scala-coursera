@@ -17,7 +17,7 @@
   - Better modularity.
   - Exploiting parallelism for multicore and cloud computing. See [this video](https://www.youtube.com/watch?v=3jg1AheF4n0).
 
-## <br>
+<br>
 
 # Function Evaluation Strategies
 
@@ -94,7 +94,7 @@ If `x`, return true right away. If `!x`, return `y` which may be true or false.
 
 _Note: Scala uses `if-else` with expressions instead of statements._
 
-## <br>
+<br>
 
 # Value Definitions
 
