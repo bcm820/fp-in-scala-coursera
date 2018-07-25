@@ -16,18 +16,22 @@ object NewtonSqrtMethod {
       else sqrtIter(applyNewtonMethod(estimate, x), x)
 
   */
-  def sqrtIter(estimate: Double, x: Double): Double =
-    if (isCloseEnough(estimate, x)) estimate
-    else sqrtIter(applyNewtonMethod(estimate, x), x)
+  def abs(i: Double) = if (i < 0) -i else i
 
-  def isCloseEnough(estimate: Double, x: Double) = {
-    def abs(x: Double) = if (x < 0) -x else x
-    abs(estimate * estimate - x) / x < 0.001
+  def sqrt(x: Double): Double = {
+
+    def sqrtIter(estimate: Double): Double =
+      if (isCloseEnough(estimate)) estimate
+      else sqrtIter(applyNewtonMethod(estimate))
+
+    def isCloseEnough(estimate: Double) = {
+      abs(estimate * estimate - x) / x < 0.001
+    }
+
+    def applyNewtonMethod(estimate: Double) =
+      (estimate + x / estimate) / 2
+
+    sqrtIter(1)
   }
-
-  def applyNewtonMethod(estimate: Double, x: Double) =
-    (estimate + x / estimate) / 2
-
-  def sqrt(x: Double): Double = sqrtIter(1, x)
 
 }

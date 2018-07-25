@@ -111,6 +111,32 @@ def x = square(y)
 val z = square(y)
 ```
 
-`def` evaluates definitions via call-by-name. They are evaluated and applied on each use. In the example, `x` will always re-evaluate `square(y)` when referenced.
+`def` evaluates definitions via call-by-name. They are evaluated and applied on each use.
 
-`val` evaluates definitions via call-by-value. They are evaluated at the point of definition. In the example, `z` will always refer to its initial evaluation (i.e. some `Int`).
+In the example above, `x` will always re-evaluate `square(y)` when referenced.
+
+`val` evaluates definitions via call-by-value. They are evaluated at the point of definition.
+
+In the example above, `z` will always refer to its initial evaluation (i.e. some `Int`).
+
+<br>
+
+# Blocks and Lexical Scope
+
+Blocks in Scala are delimited by braces.
+
+A block contains a sequence of definitions or expressions, the last expression defining the return value of the block. Blocks are themselves expressions; a bock may appear everywhere an expression can.
+
+Blocks determine visibility inside of a program. Definitions inside a block are only visible from within it. Also, definitions inside a block can shadow definitions of the same name outside the block.
+
+```
+val x = 1
+val block = {
+  val x = 2
+  x + x
+} + x
+```
+
+In the example above, `block` evaluates to 5.
+
+Note that `x` outside of the block is no longer visible from within when `x` is given a value on the inside.
