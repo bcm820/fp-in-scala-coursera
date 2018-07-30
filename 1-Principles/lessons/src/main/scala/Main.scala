@@ -1,7 +1,11 @@
-object Week1 extends App {
+object Lessons extends App {
 
-  // NewtonSqrtMethod
+  // Newton's square root method
   val sqrtOf2 = NewtonSqrtMethod.sqrt(2)
   println(s"The square root of 2 is ${sqrtOf2}")
+
+  // Tail recursion implementation of factorial
+  val factorialOf5 = TailRecFactorial.factorial(5)
+  println(s"The factorial of 3 is ${factorialOf5}")
 
 }

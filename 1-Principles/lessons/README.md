@@ -33,10 +33,10 @@ A non-primitive expression (i.e. an expression with operators that must be reduc
 
 ```
 (2 * pi) * radius:
-(2 * 3.14159) * radius:
-6.28318 * radius:
-6.28318 * 10:
-62.8318
+-> (2 * 3.14159) * radius
+-> 6.28318 * radius
+-> 6.28318 * 10
+-> 62.8318
 ```
 
 ## 1. Call-by-value (substitution model)
@@ -45,16 +45,18 @@ Reduces all expressions passed into a function into values before applying the f
 
 ```
 sumOfSquares(3, 2+2):
-sumOfSquares(3, 4):
-square(3) + square(4):
-3 * 3 + square(4):
-9 + square(4):
-9 + 4 * 4:
-9 + 16:
-25
+-> sumOfSquares(3, 4)
+-> square(3) + square(4)
+-> 3 * 3 + square(4)
+-> 9 + square(4)
+-> 9 + 4 * 4
+-> 9 + 16
+-> 25
 ```
 
 Its advantage is that it evaluates every function argument only once.
+
+This evaluation strategy can be described as a _rewriting of a program_, in the sense that the evaluated values replace a function's formal parameters.
 
 By default, Scala (as well as most other languages) use the call-by-value evaluation strategy, since in most cases it is more optimal because it only evaluates function arguments once.
 
@@ -64,13 +66,13 @@ Applies the function to unreduced arguments before rewriting the function applic
 
 ```
 sumOfSquares(3, 2+2):
-square(3) + square(2+2):
-3 * 3 + square(2+2):
-9 + square(2+2):
-9 + (2+2) * (2+2):
-9 + 4 * (2+2):
-9 + 4 * 4:
-25
+-> square(3) + square(2+2)
+-> 3 * 3 + square(2+2)
+-> 9 + square(2+2)
+-> 9 + (2+2) * (2+2)
+-> 9 + 4 * (2+2)
+-> 9 + 4 * 4
+-> 25
 ```
 
 Its advantage is that not all arguments are evaluated if its parameter is unused in the function application.
@@ -140,3 +142,47 @@ val block = {
 In the example above, `block` evaluates to 5.
 
 Note that `x` outside of the block is no longer visible from within when `x` is given a value on the inside.
+
+<br>
+
+# Tail Recursion
+
+Consider the difference in reduction sequences of two recursive algorithms:
+
+1.  `factorial`, a classic recursive algorithm:
+
+```
+def factorial(n: Int): Int =
+  if (n == 0) 1 else n * factorial(n - 1)
+
+factorial(3)
+-> 3 * factorial(2)
+-> 3 * (2 * factorial(1))
+-> 3 * (2 * (1 * factorial(0)))
+-> 3 * (2 * (1 * 1))
+-> 6
+```
+
+2.  `gcd`, a function that computes the greatest common divisor of two numbers using Euclid's algorithm
+
+```
+def gcd(a: Int, b: Int): Int =
+  if (b == 0) a else gcd(b, a % b)
+
+gcd(4, 6)
+-> gcd(4, 6 % 4)
+-> gcd(4, 2)
+-> gcd(2, 4 % 2)
+-> gcd(2, 0)
+-> 2
+```
+
+With `factorial`, each step adds elements to a growing expression that is not reduced to a final value until the very end. The results are built up and must be cached prior to the final computation. On the other hand `gcd`, returns to the shape of the original function call after evaluating an expression at each step.
+
+---
+
+### Implementation Consideration: If a function calls itself as its last action, the function's stack frame can be reused such that the recursive function executes in constant stuck space as an iterative process. This is _tail recursion_.
+
+### Generalization: If the last action of a function consists of calling a function (same or otherwise), one stack frame would be reused for both functions. These are _tail calls_.
+
+---
