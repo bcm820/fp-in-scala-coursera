@@ -186,3 +186,106 @@ With `factorial`, each step adds elements to a growing expression that is not re
 ### Generalization: If the last action of a function consists of calling a function (same or otherwise), one stack frame would be reused for both functions. These are _tail calls_.
 
 ---
+
+<br>
+
+# Higher-Order Functions
+
+Functions that take other functions as parameters or that return functions as results are called higher-order functions.
+
+Consider a simple function that takes the sum of all integers _between_ `a` and `b`:
+
+```
+def sumBetween(a: Int, b: Int): Int =
+  if (a > b) 0 else (a + a) + sumBetween(a + 1, b)
+```
+
+What if we wanted the option to sum the squares, cubes, etc. of the integers? We can use a higher-order function:
+
+```
+def sumBetween(f: Int => Int, a: Int, b: Int): Int =
+  if (a > b) 0
+  else f(a) + sum(f, a + 1, b)
+```
+
+## Currying
+
+Consider the following summation functions:
+
+```
+def sumInts(a: Int, b: Int) = sum(x => x, a, b)
+def sumCubes(a: Int, b: Int) = sum(x => x * x * x, a, b)
+def sumFactorials(a: Int, b: Int) = sum(fact, a, b)
+```
+
+Note that `a` and `b` get passed unchanged from `sumInts` and `sumCubes` into `sum`.
+We can make our syntax shorter by getting rid of these parameters...
+
+```
+def sum(f: Int => Int): (Int, Int) => Int = {
+  def sumF(a: Int, b: Int): Int =
+    if (a > b) 0
+    else f(a) + sumF(a + 1, b)
+  sumF
+}
+```
+
+`sum` is now a function that returns another function.
+The returned function `sumF` applies the given function parameter `f` and sums the results.
+
+```
+def sumInts = sum(x => x)
+def sumCubes = sum(x => x * x * x)
+```
+
+These functions can in turn be applied like any other function:
+
+```
+sumCubes(1, 10) + sumInts(10, 20)
+```
+
+Defining functions returning functions is so useful that there is a special syntax for it, a style of function definition and application called `currying`. We can rewrite the earlier `sumF` function definition as follows:
+
+```
+def sum(f: Int => Int)(a: Int, b: Int): Int =
+  if (a > b) 0 else f(a) + sum(f)(a + 1, b)
+```
+
+<br/>
+
+# Syntax Summary
+
+## Types
+
+A type can be:
+
+- numeric; i.e. `Int`, `Double` (and `Byte`, `Short`, `Char`, `Long`, `Float`)
+- Boolean
+- String
+- function
+- Others...
+
+## Expressions
+
+An expression can be:
+
+- An identifier; e.g. `x`
+- A literal; e.g. `0`, `1.0`, `"abc"`
+- A function application; e.g. `sqrt(x)`
+- An operator application; e.g. `-x`, `y + x`
+- A selection; e.g. `math.abs`
+- A conditional expression; e.g. `if (x > 0) -x else x`
+- A block; e.g. `{ val x = math.abs(y) ; x \* 2 }
+- An anonymous function; e.g. `x => x + 1`
+
+## Definitions
+
+A definition can be:
+
+- A function definiition; e.g. `def square(x: int) = x \* x
+- A value definition; e.g. `val y = square(2)`
+
+A parameter can be:
+
+- A call-by-value parameter; e.g. `x: Int`
+- A call-by-name parameter; e.g. `y: => Double`
