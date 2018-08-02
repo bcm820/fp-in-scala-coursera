@@ -289,3 +289,30 @@ A parameter can be:
 
 - A call-by-value parameter; e.g. `x: Int`
 - A call-by-name parameter; e.g. `y: => Double`
+
+<br/>
+
+# Data Structures
+
+## Classes
+
+The core data structure of Scala is a class. As with other languages, classes become new types.
+
+Defining a class also automatically defines a constructor for creating the class objects.
+
+Under the hood, Scala keeps the names of types and constructors in different namespaces. In the example below, `Rational` is stored as a type in one namespace and as a constructor in another, and there is no collision.
+
+```
+class Rational(x: Int, y: Int) {
+  def numer = x
+  def denom = y
+}
+```
+
+## Objects
+
+An object is an application of a class constructor instantiated with the operator `new`. e.g. `new Rational(1, 2)`.
+
+All class objects have members that may be selected with dot-notation.
+
+Class objects may also have methods.
