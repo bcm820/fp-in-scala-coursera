@@ -34,6 +34,7 @@ class Rational(x: Int, y: Int) {
     )
 
   // override java.lang.Object.toString method
+  // when appended to string, this will automatically be called
   override def toString() = numer + "/" + denom
 
   def subtract(r: Rational) =

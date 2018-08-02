@@ -9,8 +9,8 @@ object CurriedHOF {
 
   // mapReduce -> product -> factorial
   def runMapReduceProductToFactorial() = {
-    val pRange = CurriedHOF.productRange(x => x + x)(1, 3)
-    val fact = CurriedHOF.factorial(5)
+    val pRange = productRange(x => x + x)(1, 3)
+    val fact = factorial(5)
     println(s"(1 + 1) * (2 + 2) * (3 + 3) = ${pRange}")
     println(s"The factorial of 5 is ${fact}")
   }
