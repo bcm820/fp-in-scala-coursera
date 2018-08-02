@@ -1,18 +1,25 @@
 object CurriedHOF {
 
-  // tail recursive sumRangeFn
-  // sums the results of a range of ints passed into a given func
-  def sumRangeFn(f: Int => Int, a: Int, b: Int): Int = {
-    def loop(a: Int, acc: Int): Int =
-      if (a > b) acc
-      else loop(a + 1, acc + f(a))
-    loop(a, 0)
+  def runProductRange() = {
+    def sumRangeFn = sumRange _
+    def multRange = sumRangeFn(x => x * x)
+    val multToThree = multRange(1, 3)
+    println(s"(1 * 1) + (2 * 2) + (3 * 3) = ${multToThree}")
+  }
+
+  // mapReduce -> product -> factorial
+  def runMapReduceProductToFactorial() = {
+    val pRange = CurriedHOF.productRange(x => x + x)(1, 3)
+    val fact = CurriedHOF.factorial(5)
+    println(s"(1 + 1) * (2 + 2) * (3 + 3) = ${pRange}")
+    println(s"The factorial of 5 is ${fact}")
   }
 
   // curried sumRangeFn
+  // sums the results of a range of ints passed into a given func
   // since this belongs to a singleton object, it needs to be assigned to fn
   // in order to be curryable (val fn = curriedSumRangeFn _)
-  def curriedSumRangeFn(f: Int => Int)(a: Int, b: Int): Int = {
+  def sumRange(f: Int => Int)(a: Int, b: Int): Int = {
     def loop(a: Int, acc: Int): Int =
       if (a > b) acc
       else loop(a + 1, acc + f(a))
@@ -30,6 +37,8 @@ object CurriedHOF {
     if (a > b) 1
     else f(a) * productRange(f)(a + 1, b)
 
+  def factorial(n: Int) = productRange(x => x)(1, n)
+
   def mapReduce
     (f: Int => Int, combine: (Int, Int) => Int, base: Int)
     (a: Int, b: Int): Int =
@@ -38,7 +47,5 @@ object CurriedHOF {
 
   def productRange2(f: Int => Int)(a: Int, b: Int): Int =
     mapReduce(f, (x, y) => x * y, 1)(a, b)
-
-  def factorial(n: Int) = productRange2(x => x)(1, n)
 
 }
