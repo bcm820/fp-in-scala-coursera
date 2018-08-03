@@ -1,78 +1,109 @@
 object Classes {
 
   def run() = {
-    val r1 = new Rational(1, 2); val r2 = new Rational(2, 3)
     
-    val addr2 = r1.add(r2)
-    val multiplyByr1 = addr2.multiply(r1)
-    val subtractByr2 = multiplyByr1.subtract(r2)
-    val divideByr1 = subtractByr2.divide(r1)
-    val negative = divideByr1.negative()
-    val gcd = negative.getGCD()
-    val reduced = negative.reduce()
+    val a = new Rational(1, 3)
+    val b = new Rational(3, 4)
+    val c = new Rational(5, 6)
+    val d = new Rational(8) // see aux constructor below
     
-    println(s"${r1} + ${r2} = ${addr2}")
-    println(s"${addr2} * ${r1} = ${multiplyByr1}")
-    println(s"${multiplyByr1} - ${r2} = ${subtractByr2}")
-    println(s"${divideByr1} / ${r1} = ${divideByr1}")
-    println(s"negative of ${divideByr1}: ${negative}")
-    println(s"GCD of ${negative}: ${gcd}")
-    println(s"${negative} reduces to ${reduced}")
+    // method chaining
+    val result = a.plus(b).minus(c).times(d).dividedBy(c)
+    println(s"// ${result}")
+
+    // infix notation
+    // for methods that take one arg (also zero)
+    val result2 = a plus b minus c times d dividedBy c
+    println(s"// ${result2}")
+
+    // relaxed identifiers
+    // NOTE: precedence rules are determined by character
+    // alphanumeric characters are first,
+    // then special characters have a distinct order
+    // so we force precedence with parens
+    val result3 = ((((a + b) - c) * d) / c)
+    println(s"// ${result3}")
+
+    val comparison = a < b
+    val comparison2 = c ^ d
+    println(s"// ${comparison}")
+    println(s"// ${comparison2}")
+    
   }
 
 }
 
+// in Scala, class implicitly introduces a constructor
+// this is the primary constructor of the class
 class Rational(x: Int, y: Int) {
+  
+  // `require` validates constructor calls
+  // can also be used for functions as well
+  // if condition is false, throws IllegalArgumentException
+  require(y > 0, "Denominator must be positive")
 
-  def numer = x
-  def denom = y
+  // `this` an auxiliary constructor
+  // if no denominator is given, default to 1
+  def this(x: Int) = this(x, 1)
+  
+  // given any numer and denom, find the GCD
+  private def gcd(n: Int, d: Int): Int =
+    if (d == 0) n else gcd(d, n % d)
 
-  def add(that: Rational) =
-    new Rational(
-      this.numer * that.denom + that.numer * this.denom,
-      denom * that.denom // `this` syntax can be implied
-    )
+  // store two public members, simplified numer and denom
+  // note these are evaluated immediately and values are amortized
+  // it is good to simplify right away to minimize computations
+  // there are many ways we could've implemented the data
+  // but to the client it is all the same (data abstraction)
+  val numer = x / gcd(x, y)
+  val denom = y / gcd(x, y)
 
   // override java.lang.Object.toString method
   // when appended to string, this will automatically be called
+  // note also that self-refrence does not require `this`
   override def toString() = numer + "/" + denom
 
-  def subtract(r: Rational) =
+  def plus(r: Rational) =
+    new Rational(
+      numer * r.denom + r.numer * denom,
+      denom * r.denom
+    )
+
+  def minus(r: Rational) =
     new Rational(
       numer * r.denom - r.numer * denom,
       denom * r.denom
     )
   
-  def multiply(r: Rational) =
+  def times(r: Rational) =
     new Rational(
       numer * r.numer,
       denom * r.denom
     )
 
-  def divide(r: Rational) =
+  def dividedBy(r: Rational) =
     new Rational(
       numer * r.denom,
       denom * r.numer
     )
 
-  def negative() =
+  def less(that: Rational) =
+    this.numer * that.denom < that.numer * this.denom
+
+  def max(that: Rational) = if (this.less(that)) that else this
+
+  def toNegative() =
     new Rational(
       numer - (numer * 2),
       denom
     )
+  
+  def < (that: Rational) = this less that
+  def ^ (that: Rational) = this max that
 
-  def getGCD(): Int =
-    if (denom == 0) numer
-    else {
-      new Rational(
-        numer,
-        denom % numer
-      ).getGCD()
-    }
-
-  def reduce() =
-    new Rational(
-      1, this.getGCD()
-    )
+  def + (that: Rational) = this plus that
+  def - (that: Rational) = this minus that
+  def * (that: Rational) = this times that
+  def / (that: Rational) = this dividedBy that
 
 }
