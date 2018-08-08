@@ -292,9 +292,36 @@ A parameter can be:
 
 <br/>
 
-# Data Structures
+# Imports
 
-## Classes
+## Named
+
+```
+import package.Object
+import package.Object.method
+import package.Object.{named1, named2}
+```
+
+## Wildcard
+
+```
+import package._
+import package.Object._
+```
+
+## Automatic
+
+By default, scala already imports members belonging to:
+
+- scala
+- java.lang
+- scala.Predef (i.e. `require`, `assert`)
+
+#### Resource: http://www.scala-lang.org/api/current
+
+<br/>
+
+# Classes
 
 The core data structure of Scala is a class. As with other languages, classes become new types.
 
@@ -309,10 +336,47 @@ class Rational(x: Int, y: Int) {
 }
 ```
 
-## Objects
+See _Lessons_ folder for additional information on:
 
-An object is an application of a class constructor instantiated with the operator `new`. e.g. `new Rational(1, 2)`.
+- Class constructors (including auxilary constructors)
+- Method chaining
+- Infix notation (important!)
+- Relaxed identifiers
+- Validating constructor calls with `require`
+- Overriding
+- Data abstraction
+- Abstract classes
+- Singleton objects as values, not classes
+- Traits
 
-All class objects have members that may be selected with dot-notation.
+<br/>
 
-Class objects may also have methods.
+# Class Hierarchies
+
+`scala.Any` is the base type of all types.
+
+Methods include `==`, `!=`, `equals`, `toString`.
+
+It consists of `AnyVal` (primitive types) and `AnyRef`.
+
+- `scala.AnyVal`: `Double`, `Float`, `Long`, `int`, `Short`, `Byte`, `Char`, `Boolean`, `Unit`
+
+- `scala.AnyRef`: `String`, `Iterable`, `Seq`, `List`, all other classes
+
+`AnyRef` is just an alias for `java.lang.Object`. All reference class types are also based in `scala.ScalaObject`.
+
+All of the classes subtyped by `java.lang.Object` are also based in `scala.ScalaObject`.
+
+At the bottom of Scala's type hierarchy are `scala.Nothing` and `scala.Null`.
+
+- `Nothing` has no value. It is useful to signal abnormal termination. If a function errors out, its return type is `Nothing` (Exceptions are of type `Nothing`). Also, it is an element type of empty collections (i.e. a `Set` of `Nothing`)
+
+- `Null` is a value that can be assigned to `AnyRef` class type (e.g. `val x: String = null`). However, it is incompatible with `AnyVal` types.
+
+<br/>
+
+# Polymorphism
+
+Type parameterization means classes and methods can have types as parameters.
+
+For example, the immutable List...

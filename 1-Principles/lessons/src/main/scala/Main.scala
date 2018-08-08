@@ -1,9 +1,12 @@
 object Lessons extends App {
+  println()
 
-  NewtonSqrtMethod.run()
-  TailRecFactorial.run()
-  CurriedHOF.runProductRange()
-  CurriedHOF.runMapReduceProductToFactorial()
-  Classes.run()
+  NewtonSqrtMethod.run(); println()
+  TailRecFactorial.run(); println()
+  CurriedHOF.runProductRange();
+  CurriedHOF.runMapReduceProductToFactorial(); println()
+  Classes.run(); println()
+  ClassHierarchies.run(); println()
+  week3.ClassesAndTraits run(); println()
 
 }
