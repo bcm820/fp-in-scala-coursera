@@ -113,7 +113,7 @@ def x = square(y)
 val z = square(y)
 ```
 
-`def` evaluates definitions via call-by-name. They are evaluated and applied on each use.
+`def` evaluates definitions via call-by-name. They are evaluated and applied on each reference.
 
 In the example above, `x` will always re-evaluate `square(y)` when referenced.
 
@@ -348,6 +348,8 @@ See _Lessons_ folder for additional information on:
 - Abstract classes
 - Singleton objects as values, not classes
 - Traits
+- Value parameters
+- Type parameterization
 
 <br/>
 
@@ -359,7 +361,7 @@ Methods include `==`, `!=`, `equals`, `toString`.
 
 It consists of `AnyVal` (primitive types) and `AnyRef`.
 
-- `scala.AnyVal`: `Double`, `Float`, `Long`, `int`, `Short`, `Byte`, `Char`, `Boolean`, `Unit`
+- `scala.AnyVal`: `Double`, `Float`, `Long`, `Int`, `Short`, `Byte`, `Char`, `Boolean`, `Unit`
 
 - `scala.AnyRef`: `String`, `Iterable`, `Seq`, `List`, all other classes
 
@@ -377,6 +379,12 @@ At the bottom of Scala's type hierarchy are `scala.Nothing` and `scala.Null`.
 
 # Polymorphism
 
-Type parameterization means classes and methods can have types as parameters.
+Polymorphism means function type comes "in many forms."
 
-For example, the immutable List...
+- A function can be applied to arguments of many types
+- The type can have instances of many types
+
+Two principal forms of polymorphism:
+
+- `subtyping`: instances of a subclass can be used where a base class is expected
+- `generics`: instances of a function or class are created by type parameterization
