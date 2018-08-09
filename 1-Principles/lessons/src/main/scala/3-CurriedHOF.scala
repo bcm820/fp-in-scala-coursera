@@ -1,19 +1,4 @@
-object CurriedHOF {
-
-  def runProductRange() = {
-    def sumRangeFn = sumRange _
-    def multRange = sumRangeFn(x => x * x)
-    val multToThree = multRange(1, 3)
-    println(s"(1 * 1) + (2 * 2) + (3 * 3) = ${multToThree}")
-  }
-
-  // mapReduce -> product -> factorial
-  def runMapReduceProductToFactorial() = {
-    val pRange = productRange(x => x + x)(1, 3)
-    val fact = factorial(5)
-    println(s"(1 + 1) * (2 + 2) * (3 + 3) = ${pRange}")
-    println(s"The factorial of 5 is ${fact}")
-  }
+object CurriedHOF extends App {
 
   // curried sumRangeFn
   // sums the results of a range of ints passed into a given func
@@ -47,5 +32,17 @@ object CurriedHOF {
 
   def productRange2(f: Int => Int)(a: Int, b: Int): Int =
     mapReduce(f, (x, y) => x * y, 1)(a, b)
+
+
+  def sumRangeFn = sumRange _
+  def multRange = sumRangeFn(x => x * x)
+  val multToThree = multRange(1, 3)
+  println(s"(1 * 1) + (2 * 2) + (3 * 3) = ${multToThree}")
+
+  // mapReduce -> product -> factorial
+  val pRange = productRange(x => x + x)(1, 3)
+  val fact = factorial(5)
+  println(s"(1 + 1) * (2 + 2) * (3 + 3) = ${pRange}")
+  println(s"The factorial of 5 is ${fact}")
 
 }

@@ -1,21 +1,20 @@
-object NewtonSqrtMethod {
+/* Find the square root with Newton's method
+  - Start with an initial estimate y (start with y = 1)
+  - Repeatedly improve the estimate by taking the mean of y and x/y.
 
-  def run() = println(s"The square root of 2 is ${sqrt(2)}")
-  /* Find the square root with Newton's method
-    - Start with an initial estimate y (start with y = 1)
-    - Repeatedly improve the estimate by taking the mean of y and x/y.
+  To compute sqrt(x), given x = 2:
+  Estimate    Quotient                Mean
+  1           2 / 1 = 2               1.5
+  1.5         2 / 1.5 = 1.333         1.4167
+  1.4167      2 / 1.4.167 = 1.4118    1.4142 ...
 
-    To compute sqrt(x), given x = 2:
-    Estimate    Quotient                Mean
-    1           2 / 1 = 2               1.5
-    1.5         2 / 1.5 = 1.333         1.4167
-    1.4167      2 / 1.4.167 = 1.4118    1.4142 ...
-
-    Our approach as pseudocode:
-    def sqrtIter(estimate: Double, x: Double): Double =
-      if (isCloseEnough) estimate
-      else sqrtIter(applyNewtonMethod(estimate, x), x)
-  */
+  Our approach as pseudocode:
+  def sqrtIter(estimate: Double, x: Double): Double =
+    if (isCloseEnough) estimate
+    else sqrtIter(applyNewtonMethod(estimate, x), x)
+*/
+  
+object NewtonSqrtMethod extends App {
 
   def abs(i: Double) = if (i < 0) -i else i
 
@@ -35,5 +34,6 @@ object NewtonSqrtMethod {
     sqrtIter(1)
   }
 
+  println(s"The square root of 2 is ${sqrt(2)}")
 
 }

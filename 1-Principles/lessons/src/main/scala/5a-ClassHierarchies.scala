@@ -1,12 +1,3 @@
-object ClassHierarchies {
-  def run() {
-    val t1 = new NonEmpty(6) incl 4 incl 10 incl 2 incl 8
-    val t2 = new NonEmpty(5) incl 7 incl 3 incl 1 incl 9
-    val t3 = t1 union t2
-    println(t3)
-  }
-}
-
 // Abstract classes contain members missing implementation
 // and cannot be instantiated (i.e. via `new` keyword)
 abstract class IntSet {
@@ -60,3 +51,10 @@ class NonEmpty(elem: Int, left: IntSet, right: IntSet) extends IntSet {
 // Which `contains`, `incl`, or `union` is called?
 // It depends on if the runtime value is of type Empty or NonEmpty.
 // Dynamic binding means the method invoked relies on the runtime value.
+
+object ClassHierarchies extends App {
+  val t1 = new NonEmpty(6) incl 4 incl 10 incl 2 incl 8
+  val t2 = new NonEmpty(5) incl 7 incl 3 incl 1 incl 9
+  val t3 = t1 union t2
+  println(t3)
+}
