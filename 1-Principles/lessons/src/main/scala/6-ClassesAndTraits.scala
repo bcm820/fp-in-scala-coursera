@@ -1,4 +1,4 @@
-package week3
+package f
 
 // Traits resemble interfaces,
 // but traits can contain fields and methods.

@@ -1,3 +1,5 @@
+package c
+
 object CurriedHOF extends App {
 
   // curried sumRangeFn

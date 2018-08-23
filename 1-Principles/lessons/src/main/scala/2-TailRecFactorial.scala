@@ -1,3 +1,5 @@
+package b
+
 object TailRecFactorial extends App {
 
   // A tail recursive version of the factorial algorithm.

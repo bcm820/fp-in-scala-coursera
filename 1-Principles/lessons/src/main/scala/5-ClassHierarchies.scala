@@ -1,3 +1,5 @@
+package e
+
 // Abstract classes contain members missing implementation
 // and cannot be instantiated (i.e. via `new` keyword)
 abstract class IntSet {

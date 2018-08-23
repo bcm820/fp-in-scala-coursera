@@ -13,6 +13,8 @@
     if (isCloseEnough) estimate
     else sqrtIter(applyNewtonMethod(estimate, x), x)
 */
+
+package a
   
 object NewtonSqrtMethod extends App {
 

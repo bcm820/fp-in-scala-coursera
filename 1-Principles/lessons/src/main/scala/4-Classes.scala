@@ -1,3 +1,5 @@
+package d
+
 // in Scala, class implicitly introduces a constructor
 // this is the primary constructor of the class
 class Rational(x: Int, y: Int) {
