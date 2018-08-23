@@ -43,5 +43,10 @@ object PatternMatching2 extends App {
   println(six.show + " = " + six.eval)
   println(Sum(three, x).show)
   println(Sum(six, x).show)
-  println(Product(Sum(five, six), Product(x, two)).show)
+  println(
+    Product(
+      Sum(five, six),
+      Product(x, five)
+    ).show
+  )
 }
