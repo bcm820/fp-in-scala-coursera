@@ -336,7 +336,7 @@ class Rational(x: Int, y: Int) {
 }
 ```
 
-See _Lessons_ folder for additional information on:
+See [Lessons](./lessons/src/main/) directory for additional information on:
 
 - Class constructors (including auxilary constructors)
 - Method chaining
@@ -379,7 +379,7 @@ At the bottom of Scala's type hierarchy are `scala.Nothing` and `scala.Null`.
 
 # Polymorphism
 
-Polymorphism means function type comes "in many forms."
+Polymorphism means a class or function type comes "in many forms."
 
 - A function can be applied to arguments of many types
 - The type can have instances of many types
@@ -388,3 +388,91 @@ Two principal forms of polymorphism:
 
 - `subtyping`: instances of a subclass can be used where a base class is expected
 - `generics`: instances of a function or class are created by type parameterization
+
+Their interactions are covered in two main areas: `bounds` and `variance`.
+
+## Type Bounds
+
+Consider our abstract class [IntSet](./lessons/src/main/5-ClassHierarchies.scala) implemented as a singleton object `Empty` and a class `NonEmpty`.
+
+If we were to create a function `assertAllPos` which receives an `IntSet` and returns it if all its elements are positive or throws an exception otherwise, the simplest way to describe its type is:
+
+```
+def assertAllPos(s: IntSet): Intset
+```
+
+but this does not account for the actual `Empty` and `NonEmpty` implementations.
+
+To be more precise, we might want to create an `assertAllPos` function for each (i.e. one which automatically returns an `Empty` and another which returns either a `NonEmpty` or throws an error). But a better way to express this is:
+
+```
+def assertAllPos[S <: IntSet](r: S): S
+```
+
+Here, we define a `S` as a type parameter that must conform to `IntSet` as an `upper bound`. This will then allow us to address both implementations in one function.
+
+### Bounds Notation
+
+```
+- Upper: `S <: T`: `S` bound as a subtype of `T`
+- Lower: `S >: T`: `S` bound as a supertype of `T`
+- Mixed: `S >: T1 <: T2`: `S` bound as a supertype of `T1` and subtype of `T2`
+```
+
+---
+
+### The Liskov Substition Principle:
+
+### If `A <: B`, then everything one can do with a value of type `B` can also be done with a value of type `A`.
+
+---
+
+## Variance
+
+When working with type parameterization and subtyping, we come to the issue of variance. When working with parameterized types, we need to know how to set bounds on how the two parameterized types relate.
+
+Given `A <: B`, how can we describe this relationship when using type parametization (e.g. `C[T]`)? In general, there are three possible relationships between `C[A]` and `C[B]`:
+
+1. Covariant: `C[A] <: C[B]`.
+2. Contravariant: `C[A] >: C[B]`
+3. Nonvariant: Neither `C[A]` nor `C[B]` is a subtype of the other.
+
+Scala lets you declare the variance of a type by annotating the type parameter:
+
+1. Covariant: `class C[+A]`
+2. Contravariant: `class C[-A]`
+3. Nonvariant: `class C[A]`
+
+### Example: Typing Functions
+
+The type of function `X` is `IntSet => NonEmpty`.
+The type of function `Y` is `NonEmpty => IntSet`.
+
+Since `NonEmpty` is a subtype of `IntSet`, it holds that `X <: Y` because both evaluate to an `IntSet`. They both satisfy the same contract.
+
+<br/>
+
+# Pattern Matching
+
+The goal of decomposition is to break a complex problem into more manageable sub-problems. OOP-based languages do this by creating extensible class hierarchies, all of which implement classification and accessor methods. See an example of this [here](./lessons/src/main/10-Decomposition.scala).
+
+Note that the sole purpose of classification and accessor methods are to reverse the construction process (e.g. determine which subclass is being used and what arguments were used in the constructor method).
+
+Many functional languages, including Scala, automate this process using `pattern matching`.
+
+Scala does this using `case classes`. See an example [here](./lessons/src/main/11-PatternMatching.scala).
+
+## Rules
+
+- `match` is followed by a sequence of `case`s: `pattern => expression`
+- Each case associates an `expression` with a `pattern`
+- A `MatchError` exception is thrown if no pattern matches the value of the selector.
+
+## Forms of Patterns
+
+Patterns are constructed from:
+
+- Constructors, e.g. `Number`, `Sum`
+- Variables, e.g. `n`, `e1`, `e2` (must be lowercased)
+- Wildcard patterns, e.g. `_`
+- Constants, e.g. `1`, `true`, N (e.g. named constants)
