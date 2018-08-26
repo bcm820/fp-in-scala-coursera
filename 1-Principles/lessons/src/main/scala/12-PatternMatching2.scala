@@ -7,22 +7,22 @@ package l
 trait Expression {
 
   def eval: Int = this match {
-    case Number(n) => n
-    case Variable(_) => throw new Error("Unable to eval Variable")
-    case Sum(e1, e2) => (e1 eval) + (e2 eval)
+    case Number(n)       => n
+    case Variable(_)     => throw new Error("Unable to eval Variable")
+    case Sum(e1, e2)     => (e1 eval) + (e2 eval)
     case Product(e1, e2) => (e1 eval) * (e2 eval)
   }
 
   def paren: String = this match {
-    case Sum(_, _) => "(" + show + ")"
+    case Sum(_, _)     => "(" + show + ")"
     case Product(_, _) => "(" + show + ")"
-    case _ => show
+    case _             => show
   }
 
   def show: String = this match {
-    case Number(n) => n toString
-    case Variable(x) => x
-    case Sum(e1, e2) => e1.paren + " + " + e2.paren
+    case Number(n)       => n toString
+    case Variable(x)     => x
+    case Sum(e1, e2)     => e1.paren + " + " + e2.paren
     case Product(e1, e2) => e1.paren + " * " + e2.paren
   }
 
@@ -47,6 +47,6 @@ object PatternMatching2 extends App {
     Product(
       Sum(five, six),
       Product(x, five)
-    ).show
+    )
   )
 }

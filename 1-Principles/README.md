@@ -476,3 +476,29 @@ Patterns are constructed from:
 - Variables, e.g. `n`, `e1`, `e2` (must be lowercased)
 - Wildcard patterns, e.g. `_`
 - Constants, e.g. `1`, `true`, N (e.g. named constants)
+
+<br/>
+
+# Lists
+
+Lists are sequences like arrays, but are immutable and recursive (arrays are flat).
+
+List syntactic sugar:
+
+```
+  val nums: List[Int] = List(1,2,3,4)
+```
+
+The actual construction operation is `::` (referred to as `cons`):
+
+```
+  val nums = 1 :: (2 :: (3 :: (4 :: Nil)))
+```
+
+Since operators ending in `:` associate to the right, we can omit the parentheses:
+
+```
+  val nums = 1 :: 2 :: 3 :: 4 :: Nil
+```
+
+See [here](./lessons/src/main/13-Lists.scala) for more.
