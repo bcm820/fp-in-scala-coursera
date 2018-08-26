@@ -317,8 +317,6 @@ By default, scala already imports members belonging to:
 - java.lang
 - scala.Predef (i.e. `require`, `assert`)
 
-#### Resource: http://www.scala-lang.org/api/current
-
 <br/>
 
 # Classes
@@ -336,7 +334,7 @@ class Rational(x: Int, y: Int) {
 }
 ```
 
-See [Lessons](./lessons/src/main/) directory for additional information on:
+See [Lessons](./lessons/src/main/scala/) directory for additional information on:
 
 - Class constructors (including auxilary constructors)
 - Method chaining
@@ -393,7 +391,7 @@ Their interactions are covered in two main areas: `bounds` and `variance`.
 
 ## Type Bounds
 
-Consider our abstract class [IntSet](./lessons/src/main/5-ClassHierarchies.scala) implemented as a singleton object `Empty` and a class `NonEmpty`.
+Consider our abstract class [IntSet](./lessons/src/main/scala/5-ClassHierarchies.scala) implemented as a singleton object `Empty` and a class `NonEmpty`.
 
 If we were to create a function `assertAllPos` which receives an `IntSet` and returns it if all its elements are positive or throws an exception otherwise, the simplest way to describe its type is:
 
@@ -454,13 +452,13 @@ Since `NonEmpty` is a subtype of `IntSet`, it holds that `X <: Y` because both e
 
 # Pattern Matching
 
-The goal of decomposition is to break a complex problem into more manageable sub-problems. OOP-based languages do this by creating extensible class hierarchies, all of which implement classification and accessor methods. See an example of this [here](./lessons/src/main/10-Decomposition.scala).
+The goal of decomposition is to break a complex problem into more manageable sub-problems. OOP-based languages do this by creating extensible class hierarchies, all of which implement classification and accessor methods. See an example of this [here](./lessons/src/main/scala/10-Decomposition.scala).
 
 Note that the sole purpose of classification and accessor methods are to reverse the construction process (e.g. determine which subclass is being used and what arguments were used in the constructor method).
 
 Many functional languages, including Scala, automate this process using `pattern matching`.
 
-Scala does this using `case classes`. See an example [here](./lessons/src/main/11-PatternMatching.scala).
+Scala does this using `case classes`. See an example [here](./lessons/src/main/scala/11-PatternMatching.scala).
 
 ## Rules
 
@@ -501,4 +499,4 @@ Since operators ending in `:` associate to the right, we can omit the parenthese
   val nums = 1 :: 2 :: 3 :: 4 :: Nil
 ```
 
-See [here](./lessons/src/main/13-Lists.scala) for more.
+See [here](./lessons/src/main/scala/13-Lists.scala) for more.
