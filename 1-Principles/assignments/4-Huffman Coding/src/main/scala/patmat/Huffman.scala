@@ -240,8 +240,8 @@ Fork(left: CodeTree, right: CodeTree, chars: List[Char], weight: Int)
    * use it in the `convert` method above, this merge method might also do some transformations
    * on the two parameter code tables.
   */
+  def merge(bit: Bit, code: (Char, List[Bit])): (Char, List[Bit]) = (code._1, bit :: code._2)
   def mergeCodeTables(a: CodeTable, b: CodeTable): CodeTable = {
-    def merge(bit: Bit, code: (Char, List[Bit])): (Char, List[Bit]) = (code._1, bit :: code._2)
     a.map(code => merge(0, code)) ::: b.map(code => merge(1, code))
   }
   

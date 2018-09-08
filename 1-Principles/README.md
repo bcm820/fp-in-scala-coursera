@@ -499,4 +499,212 @@ Since operators ending in `:` associate to the right, we can omit the parenthese
   val nums = 1 :: 2 :: 3 :: 4 :: Nil
 ```
 
-See [here](./lessons/src/main/scala/13-Lists.scala) for more.
+See [here](./lessons/src/main/scala/13-Lists.scala) for examples.
+
+## List Methods
+
+### Sublists and element access
+
+- `xs.length`: The number of elements of `xs`
+- `xs.last`: The list's last element\*; constant time complexity
+- `xs.init`: A list containing all elements of `xs` except the last\*
+- `xs take n`: A list consisting of the first `n` elements of `xs`, or `xs` itself if it is shorter than `n`
+- `xs drop n`: The rest of the collection after taking `n` elements
+- `xs(n)`: The element of `xs` at index `n`
+
+\* Throws an exception if `xs` is empty
+
+To remove an element at an index, we can implement it like so:
+
+```
+  def removeAt[T](xs: List[T], n: Int): List[T] =
+    (xs take n) ::: (xs drop +1)
+```
+
+### Creating new lists
+
+- `xs ++ ys`: A list from concatenating two lists (`:::` is exclusive to Lists, `++` is for any collection)
+- `xs splitAt n`: A pair of two lists, the elements up to `n` index and elements from `n` index
+- `xs.reverse`: A list from `xs` in reverse order
+- `xs updated (n, x)`: A list with the same elements as `xs`, except at index `n` where it contains `x`
+
+### Finding elements
+
+- `xs indexOf x`: The index of the first element matching `x`, or -1 if `x` is not found
+- `xs contains x`: Same as `xs indexOf x >= 0`
+
+### Higher order functions
+
+- `xs map t`: Returns list with each element transformed
+- `xs filter p`: Returns list with elements passing
+- `xs filterNot p`: Returns list with elements failing
+- `xs partition p`: Pair of two sub-lists, passing and failing
+- `xs takeWhile p`: Returns list of passing elements until condition fails
+- `xs dropWhile p`: Returns remainder of list after `takeWhile`
+- `xs span p`: Pair of two sub-lists, result of `takeWhile` and `dropWhile`
+
+<br/>
+
+# Collection Hierarchy
+
+- Iterable
+  - Sequence
+    - List
+    - Vector
+    - Range
+  - Set
+  - Map
+- Sequence-like
+  - Array
+  - String
+
+Note: Arrays and Strings can also be iterated as sequences, even if they are not subclasses of Iterable. You can use Sequence methods on these data structures!
+
+## Vector
+
+Lists are linear -- elements are accessed from left to right.
+
+A vector has a more evenly balanced access pattern. It is represented as a shallow tree. Its root node is a 32-length array, and each element can become a pointer to another 32-length array (32 _ 32), which can also include pointers to more arrays (32 _ 32 \* 32), etc.
+
+Vectors are good for bulk operations that traverse a sequence (i.e. map, fold, filter).
+
+Vectors are created analogously to lists and support the same operations with the exception of `::` (`cons`). Instead:
+
+```
+* `x +: xs`: Adds element `x` to the left of `xs`
+* `xs :+ x`: Adds element `x` to the right of `xs`
+```
+
+## Range
+
+A Range is a sequence of evenly spaced integers.
+
+It is represented as a single object with three fields: a lower bound, upper, bound, and a step value.
+
+```
+val r: Range = 1 until 5      // 1, 2, 3, 4
+val s: Range = 1 to 5         // 1, 2, 3, 4, 5
+val t: Range = 1 to 10 by 3   // 1, 4, 7, 10
+val u: Range = 6 to 1 by -2   // 6, 4, 2
+```
+
+<br/>
+
+# More Sequence Operators
+
+```
+xs exists p     true if p(x) for at least one element in xs
+xs forall p     true if p(x) for all elements in xs
+xs zip ys       A sequence of pairs from corresponding elements
+xs unzip        Splits a sequence of pairs into two
+xs flatMap f    Applies f to all elements of xs and concatenates results
+xs sum          Sum of all elements of a numeric collection
+xs product      Product of all elements of a numeric collection
+xs max          The maximum of all elements (an Ordering must exist)
+xs min          The minimum of all elements
+xs sorted       Sorts a collection numerically or alphabetically
+xs sortWith c   Sorts a collection using a comparator (e.g. `xs sortWith (_.length < _.length>)`)
+xs groupBy f    Partitions a collection into a map of collections via a discriminator (e.g. `xs groupBy(_.head)`)
+```
+
+<br/>
+
+# For Expressions
+
+Let's say you wanted a list of the `names` of `persons` over 20 years old. You can write:
+
+```
+persons filter (p => p.age > 20) map (p => p.name)
+```
+
+But this can also be obtained by writing:
+
+```
+for (p <- persons if p.age > 20) yield p.name
+```
+
+For each element `p` in persons, if their age is greater than 20, yield their name (into a sequence).
+
+A for-expression is of the form `for (s) yield e` where `s` is a sequence of `generators` and `filters` and `e` is an expression whose value is returned by an iteration.
+
+A `generator` is of the form `pattern <- expression`.
+A `filter` is of the form `if boolean expression`.
+
+The sequence must start with a generator, and there can be several generators in the sequence.
+
+Instead of `(s)`, braces `{ s }` can also be used. Then the sequence of generators and filters can be written on multiple lines without semi-colons.
+
+<br/>
+
+# Sets
+
+Sets are another basic abstraction in the Scala collections.
+
+A set is written analogously to a sequence and has some similar operations:
+
+```
+val fruit = Set("apple", "banana", "pear")
+val s = (1 to 6).toSet
+
+s map (_ + 2) // Set(3,4,5,6,7,8)
+fruit filter (_.startsWith == "app") // Set("apple")
+s.nonEmpty // true
+```
+
+Sets vs Sequences:
+
+1. Sets are unordered
+
+2. Sets do not have duplicate elements
+
+```
+s map (_ / 2) // Set(2, 0, 3, 1)
+```
+
+3. The fundamental operation on sets is `contains`
+
+```
+s contains 5 // true
+```
+
+<br/>
+
+# Maps
+
+A map is a data structure that associates keys of type `Key` with values of type `Value`.
+
+```
+val romanNumerals = Map("I" -> 1, "V" -> 5, "X" -> 10)
+val capitalOfCountry = Map("US" -> "Washington DC", "Switzerland" -> "Bern")
+```
+
+Maps are iterables but they are also functions since they extend the function type `Key => Value`. This means maps can be used everywehre functions can. In particular, maps can be applied to key arguments:
+
+```
+capitalOfCountry("US") // "Washington DC"
+```
+
+Applying a map to a non-existing key gives an error (`java.util.NoSuchElementException`), so we could use the `get` operation:
+
+```
+capitalOfCountry get "US"       // Some("Washington DC")
+capitalOfCountry get "Andorra"  // None
+```
+
+Note that the result of a `get` operation is an `Option` value.
+
+To unpack the actual value, we can decompose using pattern matching:
+
+```
+def getCapital(country: String) = capitalOfCountry.get(country) match {
+  case Some(capital) => capital
+  case None => "None found"
+}
+```
+
+Another approach however would be to define the map as a total function. Originally maps are `partial functions`. To do this, we use `withDefaultValue`:
+
+```
+val capitalWithDefault = capitalOfCountry withDefaultValue "None found"
+capitalWithDefault("Andorra") // "None found"
+```
