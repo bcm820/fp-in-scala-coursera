@@ -64,25 +64,10 @@ object a_Recap extends App {
   // does not have a matching pattern
   val f3: PartialFunction[List[Int], String] = {
     case Nil => "one"
-    case x :: rest =>
-      rest match {
-        case Nil => "two"
-      }
+    // case x :: rest =>
+    //   rest match {
+    //     case Nil => "two"
+    //   }
   }
-
-  // For-Expressions implemented by Scala compiler
-  val e1 = List(1, 2, 3, 4, 5)
-  val e2 = for (x <- e1) yield x + 1 // evaluates to `e1.map(_ + 1)`
-
-  val f4: Int => Boolean = x => x > 2
-  val e3 = for (x <- e1 if f4(x)) yield x
-  // evaluates to `for (x <- e1.withFilter(x => f)) yield x`
-  // withFilter is a lazy variant of filter that does not allocate a list
-  // but forwards the passing elements to the following map/flatMap function
-  e1.withFilter(e => e > 3) // TraversableLike$WithFilter@61c8ce67
-    .map(_ + 1) // List(4, 5) => List(5, 6)
-
-  val e4 = for (x <- e1; y <- e2) yield x
-  // evalutes to `e1.flatMap(x => for (y <- e2) yield x)`
 
 }

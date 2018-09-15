@@ -1,5 +1,9 @@
 object b_QueriesWithFor extends App {
 
+  // For-expressions can be used to make DB queries
+  // if the interface defines methods map, flatMap, and withFilter
+  // e.g. ScalaQuery, Slick (similar to C#'s LINQ)
+
   case class Book(title: String, authors: List[String])
 
   // Mini database using named parameters (vs positional)
@@ -20,8 +24,7 @@ object b_QueriesWithFor extends App {
     b <- books
     a <- b.authors
     if a startsWith "Bird"
-  } yield b.title
-  // Set("Intro to FP")
+  } yield b.title // Set("Intro to FP")
 
   // Find titles of books with the word "Program" in the title
   for {
@@ -41,7 +44,6 @@ object b_QueriesWithFor extends App {
     a1 <- b1.authors // Iterate over book authors twice
     a2 <- b2.authors // to get pairs of book authors
     if a1 == a2 // Filter for pairs of matching authors
-  } yield a1
-  // Set("Bloch, Joshua")
+  } yield a1 // Set("Bloch, Joshua")
 
 }
